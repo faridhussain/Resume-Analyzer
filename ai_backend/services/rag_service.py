@@ -1,4 +1,5 @@
 from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import requests
 from pydantic import BaseModel
 import os
@@ -15,10 +16,11 @@ class PdfData(BaseModel):
     pdf_url: str
 
 
-@router.post("/pdf-data")
-async def extract_data_from_pdf(req: PdfData):
+async def rag_service(req: PdfData):
     pdfUrl = req.pdf_url
     print("url :", pdfUrl)
     loader = PyPDFLoader(pdfUrl)
     data = loader.load()
-    return {"data": data[0]}
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
+    texts = text_splitter.split_text(data)
+    
