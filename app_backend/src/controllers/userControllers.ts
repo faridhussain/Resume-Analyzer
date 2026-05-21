@@ -97,3 +97,31 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+
+//get the user profile
+
+export const profile = async (req: Request, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+      omit: {
+        password: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found.",
+      });
+    }
+
+    return res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error("Me error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Something went wrong. Try again.",
+    });
+  }
+};
