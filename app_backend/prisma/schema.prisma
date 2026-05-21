@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  resumes  Resume[]
+  analyses Analysis[]
+  messages Message[]
+}
+
+model Resume {
+  id         String   @id @default(uuid())
+  userId     String
+  pdf_url    String
+  uploadedAt DateTime @default(now())
+
+  user     User       @relation(fields: [userId], references: [id])
+  analyses Analysis[]
+}
+
+model Analysis {
+  id         String   @id @default(uuid())
+  userId     String
+  resumeId   String
+  jobTitle   String
+  atsScore   Int
+  fullResult Json
+  createdAt  DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  resume Resume @relation(fields: [resumeId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  userId    String
+  resumeId  String
+  role      String //"user" or "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
