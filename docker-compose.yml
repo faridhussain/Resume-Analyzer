@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: farhan
-      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_PASSWORD: p3rs0nal
       POSTGRES_DB: ai_resume
     ports:
       - "5432:5432"
