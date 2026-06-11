@@ -1,8 +1,9 @@
-import express from "express";
+import express, { json } from "express";
 import dotenv from "dotenv";
 import resumeRoutes from "./src/routes/resumeRoutes";
 dotenv.config();
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import userRoutes from "./src/routes/userRoutes";
 
@@ -14,6 +15,8 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cookieParser());
+
 app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "hello there! This is the node js backend" });

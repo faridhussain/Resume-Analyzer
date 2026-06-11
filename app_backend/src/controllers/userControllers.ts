@@ -31,6 +31,14 @@ export const signUp = async (req: Request, res: Response) => {
       data: { name, email, password: hashed },
     });
 
+    // create JWT
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" },
+    );
+    res.cookie("token", token);
+
     return res.status(201).json({
       success: true,
       message: "Account created successfully.",
@@ -80,6 +88,7 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_SECRET as string,
       { expiresIn: "7d" },
     );
+    res.cookie("token", token);
 
     return res.status(200).json({
       success: true,
@@ -122,6 +131,22 @@ export const profile = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       error: "Something went wrong. Try again.",
+    });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("token");
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Trouble in Logout",
     });
   }
 };
