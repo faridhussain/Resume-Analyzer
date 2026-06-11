@@ -31,7 +31,7 @@ export default function Login() {
                     />
                 ))}
             </svg>
-            <Link to='/' className='absolute top-6 left-6 flex items-center gap-1.5 text-sm text-[#8a8686] hover:text-[#D9A919] transition-colors duration-200 z-10'><ArrowLeft size={15} />Home</Link>
+            <Link to='/' className='group absolute top-6 left-6 flex items-center gap-1.5 text-sm text-[#8a8686] hover:text-[#D9A919] transition-colors duration-200 z-10'><ArrowLeft size={15} className='duration-300 group-hover:-translate-x-0.5 transition-transform' size={15} strokeWidth={2} />Home</Link>
             <div className='relative z-10 w-full max-w-sm mx-4'>
                 <div className='text-center mb-7'>
                     <h1 className='text-3xl font-bold tracking-tight'>Log in to <span className='text-[#D9A919]'>Resume Analyser</span></h1>
@@ -92,7 +92,7 @@ export default function Login() {
                         </button>
                     </div>
                 </div>
-                <button className='w-full py-2.5 rounded-xl bg-[#D9A919] text-black font-semibold text-sm hover:shadow-[0_0_20px_rgba(217,169,25,0.35)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none' disabled={!email || !password}>Log in</button>
+                <button className='w-full py-2.5 rounded-xl bg-[#D9A919] text-black font-semibold text-sm hover:shadow-[0_0_20px_rgba(217,169,25,0.35)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none cursor-pointer' disabled={!email || !password}>Log in</button>
                 <p className='mt-5 text-center text-xs text-[#444] leading-relaxed'>
                     By signing in, you agree to our{' '}
                     <Link to='/terms' className='text-[#888] hover:text-[#D9A919] transition-colors duration-200'>Terms</Link>
