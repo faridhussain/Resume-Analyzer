@@ -37,7 +37,7 @@ export default function Login() {
                     <h1 className='text-3xl font-bold tracking-tight'>Log in to <span className='text-[#D9A919]'>Resume Analyser</span></h1>
                     <p className='mt-2 text-base text-[#8a8686]'>
                         Don't have an account?{' '}
-                        <Link to='/signup' className='inline-flex items-center gap-1 text-[#D9A919] group'>Sign up <ArrowRight size={16} className='transition-transform duration-300 group-hover:translate-x-0.5' /></Link>
+                        <Link to='/signupEmail' className='inline-flex items-center gap-1 text-[#D9A919] group'>Sign up <ArrowRight size={16} className='transition-transform duration-300 group-hover:translate-x-0.5' /></Link>
                     </p>
                 </div>
                 <div className='mb-5'>
@@ -65,7 +65,7 @@ export default function Login() {
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             placeholder='alan.turing@example.com'
-                            className='w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#111] border border-[#2a2a2a] text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D9A919] focus:shadow-[0_0_0_3px_rgba(217,169,25,0.1)] transition-all duration-200'
+                            className='w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#111] border border-[#2a2a2a] text-sm text-white placeholder-[#444] focus:outline-none hover:border-[#444242] focus:border-[#D9A919] transition-all duration-200'
                         />
                     </div>
                 </div>
@@ -81,7 +81,7 @@ export default function Login() {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder='••••••••'
-                            className='w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#111] border border-[#2a2a2a] text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D9A919] focus:shadow-[0_0_0_3px_rgba(217,169,25,0.1)] transition-all duration-200'
+                            className='w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#111] border border-[#2a2a2a] text-sm text-white placeholder-[#444] focus:outline-none hover:border-[#444242] focus:border-[#D9A919] transition-all duration-200'
                         />
                         <button
                             type='button'

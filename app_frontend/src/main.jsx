@@ -4,8 +4,10 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
-import Signup from "./pages/Signup.jsx";
-import About from './pages/About.jsx';
+import About from "./pages/About.jsx";
+import SignupEmail from "./pages/SignupEmail.jsx";
+import SignupOtp from "./pages/SignupOtp.jsx";
+import SignupPassword from "./pages/SignupPassword.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,9 +23,17 @@ const router = createBrowserRouter([
     element: <About />,
   },
   {
-    path: "/signup",
-    element: <Signup />,
-  }
+    path: "/signupEmail",
+    element: <SignupEmail />,
+  },
+  {
+    path: "/signupOtp",
+    element: <SignupOtp />,
+  },
+  {
+    path: "/signupPassword",
+    element: <SignupPassword />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
