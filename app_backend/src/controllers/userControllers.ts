@@ -110,26 +110,13 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
 export const setPassword = async (req: Request, res: Response) => {
   try {
-    const { password } = req.body;
-
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Token missing",
-      });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      email: string;
-    };
+    const { email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await prisma.user.update({
       where: {
-        email: decoded.email,
+        email: email,
       },
       data: {
         password: hashedPassword,
@@ -279,6 +266,31 @@ export const logout = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Trouble in Logout",
+    });
+  }
+};
+
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        isVerified: true,
+        createdAt: true,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error("Get All Users Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
     });
   }
 };
