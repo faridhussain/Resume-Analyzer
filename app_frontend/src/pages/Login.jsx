@@ -37,7 +37,7 @@ export default function Login() {
                     <h1 className='text-3xl font-bold tracking-tight'>Log in to <span className='text-[#D9A919]'>Resume Analyser</span></h1>
                     <p className='mt-2 text-base text-[#8a8686]'>
                         Don't have an account?{' '}
-                        <Link to='/signupEmail' className='inline-flex items-center gap-1 text-[#D9A919] group'>Sign up <ArrowRight size={16} className='transition-transform duration-300 group-hover:translate-x-0.5' /></Link>
+                        <Link to='/signup' className='inline-flex items-center gap-1 text-[#D9A919] group'>Sign up <ArrowRight size={16} className='transition-transform duration-300 group-hover:translate-x-0.5' /></Link>
                     </p>
                 </div>
                 <div className='mb-5'>
