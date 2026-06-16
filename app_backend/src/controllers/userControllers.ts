@@ -145,12 +145,6 @@ export const setPassword = async (req: Request, res: Response) => {
       },
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
     return res.status(200).json({
       success: true,
       message: "Registration completed",
@@ -158,6 +152,7 @@ export const setPassword = async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        token: token,
       },
     });
   } catch (error) {
