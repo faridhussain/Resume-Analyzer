@@ -40,7 +40,9 @@ export default function Login() {
             })
             if (data.success) {
                 localStorage.setItem('token', data.token)
-                window.location.href = '/'
+                const redirectPath = localStorage.getItem('redirectAfterLogin') || '/'
+                localStorage.removeItem('redirectAfterLogin')
+                window.location.href = redirectPath
             }
         } catch (error) {
             setApiError(

@@ -538,7 +538,9 @@ function StepPassword({ name, email }) {
             console.log(data.user.token)
             if (data.success) {
                 localStorage.setItem('token', data.user.token)
-                window.location.href = '/'
+                const redirectPath = localStorage.getItem('redirectAfterLogin') || '/'
+                localStorage.removeItem('redirectAfterLogin')
+                window.location.href = redirectPath
             }
         } catch (error) {
             setApiError(

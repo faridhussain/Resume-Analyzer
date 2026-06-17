@@ -1,9 +1,25 @@
 import Navbar from '../components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { toast } from '../components/Toaster.jsx'
 import ResumeBackground from '../components/HeroBackground.jsx'
 
 export default function Home() {
+    const navigate = useNavigate()
+
+    const handleAnalyzeResume = () => {
+        const token = localStorage.getItem('token')
+
+        if (!token) {
+            localStorage.setItem('redirectAfterLogin', '/analyseresume')
+            toast('Please login to analyze your resume', 'error')
+            navigate('/login')
+            return
+        }
+
+        navigate('/analyseresume')
+    }
+
     return (
         <div className='relative h-screen w-full bg-[#0A0A0A] text-white flex flex-col overflow-hidden'>
             <div className='absolute inset-0 bg-dot-pattern mask-[radial-gradient(circle_at_center,black_40%,transparent_90%)] opacity-70 pointer-events-none' />
@@ -23,7 +39,7 @@ export default function Home() {
                     </h4>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-3 sm:gap-5 w-full sm:w-auto items-center'>
-                    <Link to='/analyseresume' className='w-full sm:w-auto group px-5 py-2.5 bg-[#D9A919] font-medium inline-flex items-center justify-center gap-1 rounded-xl hover:shadow-[0_0_15px_rgba(193,143,19,0.6)] duration-300 hover:-translate-y-0.5 text-black text-base md:text-lg'>Analyze Your Resume</Link>
+                    <button onClick={handleAnalyzeResume} className='w-full sm:w-auto group px-5 py-2.5 bg-[#D9A919] font-medium inline-flex items-center justify-center gap-1 rounded-xl hover:shadow-[0_0_15px_rgba(193,143,19,0.6)] duration-300 hover:-translate-y-0.5 text-black text-base md:text-lg cursor-pointer'>Analyze Your Resume</button>
                     <Link to='/' className='w-full sm:w-auto relative overflow-hidden group px-5 py-2.5 bg-[#0E0D09] border border-[#383733] rounded-xl text-gray-300 font-medium text-base md:text-lg hover:border-[#5a4a19] hover:shadow-[0_0_15px_rgba(217,169,25,0.4)] hover:-translate-y-0.5 transition-all duration-300' >
                         <span className='absolute top-0 -left-full h-full w-1/3 skew-x-12 bg-linear-to-r from-transparent via-[#D9A919]/50 to-transparent transition-all duration-700 group-hover:left-[130%]' />
                         <span className='relative z-10 flex justify-center items-center gap-1'>Ask about Your Resume <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform duration-300' /></span>
