@@ -503,7 +503,7 @@ function StepOtp({ email, onNext, onBack, active }) {
     );
 }
 
-function StepPassword({ name, email }) {
+function StepPassword({ name, email, onDone }) {
     const [values, setValues] = useState({
         password: '',
         confirmPassword: '',
@@ -550,10 +550,8 @@ function StepPassword({ name, email }) {
                 );
 
                 const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
-
                 localStorage.removeItem('redirectAfterLogin');
-
-                window.location.href = redirectPath;
+                onDone(redirectPath);
             }
         } catch (error) {
             setApiError(error.response?.data?.error || 'Something went wrong. Please try again.');
@@ -716,7 +714,7 @@ export default function Signup() {
                     </Panel>
 
                     <Panel index={2} step={step}>
-                        <StepPassword name={info.fullName} email={info.email} onDone={() => navigate('/')} />
+                        <StepPassword name={info.fullName} email={info.email} onDone={(path) => navigate(path, { replace: true })} />
                     </Panel>
                 </div>
             </div>
