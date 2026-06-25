@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle } from 'lucide-react';
 import { loginUser } from '../services/authApi';
 
@@ -30,6 +30,8 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [apiError, setApiError] = useState('');
 
+    const navigate = useNavigate();
+
     const handleLogin = async () => {
         setApiError('');
         try {
@@ -50,10 +52,8 @@ export default function Login() {
                 );
 
                 const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
-
                 localStorage.removeItem('redirectAfterLogin');
-
-                window.location.href = redirectPath;
+                navigate(redirectPath, { replace: true });
             }
         } catch (error) {
             setApiError(error.response?.data?.message || error.response?.data?.error || 'Invalid email or password. Please try again.');
