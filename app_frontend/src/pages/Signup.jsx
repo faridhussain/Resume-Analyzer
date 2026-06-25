@@ -336,7 +336,7 @@ function StepOtp({ email, onNext, onBack, active }) {
 
     useEffect(() => {
         if (active && !prevActiveRef.current) {
-            setResendTimer(60);
+            setResendTimer(30);
             setOtp(Array(OTP_LENGTH).fill(''));
             setActiveError('');
             setResendSuccess(false);
