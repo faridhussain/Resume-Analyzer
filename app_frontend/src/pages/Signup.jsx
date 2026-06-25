@@ -686,7 +686,13 @@ export default function Signup() {
                 </Link>
             ) : (
                 <button
-                    onClick={() => goTo(step - 1)}
+                    onClick={() => {
+                        if (step === 2) {
+                            goTo(0);
+                        } else {
+                            goTo(step - 1);
+                        }
+                    }}
                     className='group absolute top-6 left-6 flex items-center gap-1.5 text-sm md:text-base text-[#8a8686] hover:text-[#D9A919] transition-colors duration-200 z-10 cursor-pointer'
                 >
                     <ArrowLeft className='duration-300 group-hover:-translate-x-0.5 transition-transform' size={15} strokeWidth={2} />
