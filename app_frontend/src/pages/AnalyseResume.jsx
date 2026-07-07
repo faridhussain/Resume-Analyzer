@@ -160,7 +160,8 @@ export default function ResumeUpload() {
             });
         }
     }, [selectedRoleIndex]);
-    const inputRef = useRef(null);
+    const roleInputRef = useRef(null);
+    const fileInputRef = useRef(null);
     const loadingIntervalRef = useRef(null);
 
     const [progress, setProgress] = useState(0);
@@ -244,12 +245,27 @@ export default function ResumeUpload() {
             return;
         }
 
+        const newCount = targetRoles.length + 1;
+
         setTargetRoles((prev) => [...prev, role]);
         setRoleInput('');
+        setSelectedRoleIndex(-1);
+
+        requestAnimationFrame(() => {
+            if (newCount < 3) {
+                roleInputRef.current?.focus();
+            } else {
+                roleInputRef.current?.blur();
+            }
+        });
     }
 
     function removeRole(role) {
-        setTargetRoles(targetRoles.filter((r) => r !== role));
+        setTargetRoles((prev) => prev.filter((r) => r !== role));
+
+        requestAnimationFrame(() => {
+            roleInputRef.current?.focus();
+        });
     }
 
     async function handleUpload() {
@@ -333,7 +349,7 @@ export default function ResumeUpload() {
         setTargetRoles([]);
         setRoleInput('');
         clearInterval(loadingIntervalRef.current);
-        if (inputRef.current) inputRef.current.value = '';
+        if (fileInputRef.current) fileInputRef.current.value = '';
     }
 
     function formatSize(bytes) {
@@ -346,12 +362,14 @@ export default function ResumeUpload() {
         <div className='relative min-h-screen w-full bg-[#0A0A0A] text-white overflow-x-hidden'>
             <Background />
             <div className='relative z-10'>
-                <div className='absolute top-6 left-6 z-20'>
-                    <button onClick={() => navigate('/')} className='group inline-flex items-center gap-2 text-[#999] hover:text-[#D9A919] transition-colors duration-200 cursor-pointer'>
-                        <ArrowLeft size={18} className='transition-transform duration-200 group-hover:-translate-x-1' />
-                        <span>Home</span>
-                    </button>
-                </div>
+                {!hasResult && (
+                    <div className='absolute top-6 left-6 z-20'>
+                        <button onClick={() => navigate('/')} className='group inline-flex items-center gap-2 text-[#999] hover:text-[#D9A919] transition-colors duration-200 cursor-pointer'>
+                            <ArrowLeft size={18} className='transition-transform duration-200 group-hover:-translate-x-1' />
+                            <span>Home</span>
+                        </button>
+                    </div>
+                )}
                 {!hasResult && (
                     <div className='relative z-10 flex items-start justify-center py-12 px-4 min-h-screen'>
                         <div className='w-full max-w-xl mt-8'>
@@ -373,13 +391,15 @@ export default function ResumeUpload() {
 
                                     <div className='relative'>
                                         <input
+                                            ref={roleInputRef}
                                             value={roleInput}
+                                            disabled={targetRoles.length >= 3}
                                             onChange={(e) => {
                                                 setRoleInput(e.target.value);
                                                 setSelectedRoleIndex(-1);
                                             }}
-                                            placeholder='Search target roles...'
-                                            className='w-full bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3 outline-none text-sm focus:border-[#D9A919]'
+                                            placeholder={targetRoles.length >= 3 ? 'Maximum 3 roles selected' : 'Search target roles...'}
+                                            className={`w-full rounded-xl px-4 py-3 outline-none text-sm border transition-colors ${targetRoles.length >= 3 ? 'bg-[#0d0d0d] border-[#1f1f1f] text-[#555] cursor-not-allowed' : 'bg-[#111] border-[#2a2a2a] focus:border-[#D9A919]'}`}
                                             onKeyDown={(e) => {
                                                 if (!filteredRoles.length) return;
 
@@ -407,7 +427,7 @@ export default function ResumeUpload() {
                                             }}
                                         />
 
-                                        {filteredRoles.length > 0 && (
+                                        {targetRoles.length < 3 && filteredRoles.length > 0 && (
                                             <div className='absolute left-0 right-0 mt-2 bg-[#111] border border-[#2a2a2a] rounded-xl overflow-hidden z-30 shadow-xl'>
                                                 {filteredRoles.map((role, index) => (
                                                     <button key={role} ref={(el) => (suggestionRefs.current[index] = el)} type='button' onClick={() => addRole(role)} className={`w-full text-left px-4 py-3 text-sm transition-colors ${selectedRoleIndex === index ? 'bg-[#1a1200] text-[#D9A919]' : 'text-[#ddd] hover:bg-[#1a1200] hover:text-[#D9A919]'}`}>
@@ -418,7 +438,7 @@ export default function ResumeUpload() {
                                         )}
                                     </div>
 
-                                    <p className='text-xs text-[#666] mt-2'>Search and select up to 3 target roles.</p>
+                                    <p className='text-xs text-[#666] mt-2'>{targetRoles.length >= 3 ? 'Maximum roles selected. Remove one to add another.' : 'Search and select up to 3 target roles.'}</p>
 
                                     {targetRoles.length > 0 && (
                                         <div className='flex flex-wrap gap-2 mt-4'>
@@ -436,7 +456,7 @@ export default function ResumeUpload() {
                                 </div>
                                 {!file && !uploadedUrl && (
                                     <div
-                                        onClick={() => inputRef.current?.click()}
+                                        onClick={() => fileInputRef.current?.click()}
                                         onDrop={handleDrop}
                                         onDragOver={(e) => {
                                             e.preventDefault();
@@ -450,7 +470,7 @@ export default function ResumeUpload() {
                                         </div>
                                         <p className='text-[15px] font-semibold text-[#ddd] mb-1'>Drag & drop your PDF here</p>
                                         <p className='text-xs text-[#555]'>or click to browse · PDF only · max {MAX_SIZE_LABEL}</p>
-                                        <input ref={inputRef} type='file' accept='.pdf,application/pdf' className='hidden' onChange={(e) => handleFileChange(e.target.files[0])} />
+                                        <input ref={fileInputRef} type='file' accept='.pdf,application/pdf' className='hidden' onChange={(e) => handleFileChange(e.target.files[0])} />
                                     </div>
                                 )}
 
